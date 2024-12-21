@@ -23,18 +23,63 @@ In timing diagram Q0 is changing as soon as the negative edge of clock pulse is 
 ![image](https://github.com/naavaneetha/4-BIT-RIPPLE-COUNTER/assets/154305477/85e1958a-2fc1-49bb-9a9f-d58ccbf3663c)
 
 **Procedure**
-
 /* write all the steps invloved */
+1.Code Overview: Understand the Verilog module ripple_counter, which includes clock (clk) and reset (rst) inputs, and a 4-bit output count. The counter increments on each positive clock edge unless reset is asserted, resetting the count to 0.
+
+2.Simulation Preparation: Use a Verilog simulator (e.g., ModelSim) and write a testbench module to apply clock and reset signals while monitoring the counter output.
+
+3.Testbench Implementation: Instantiate the ripple_counter module in the testbench, generate clock and reset signals, apply them to the counter module, and observe the count output.
+
+4.Simulation Execution: Compile both the counter module and the testbench, simulate the design, and verify that the counter counts from 0 to 15 (binary 1111) and resets to 0 when the reset signal is activated.
+
+5.Verification and Debugging: Analyze timing diagrams to ensure proper counter behavior, debug any encountered issues during simulation, and make necessary modifications to the design for optimal functionality
 
 **PROGRAM**
 
-/* Program for 4 Bit Ripple Counter and verify its truth table in quartus using Verilog programming.
+/* Program for 4 Bit Ripple Counter and verify its truth table in quartus using Verilog programming.*/
+Developed by: Paranthaman . S
 
- Developed by: RegisterNumber:
-*/
+RegisterNumber: 24900681
+```
+module ripple (
+    input clk,    
+    input reset,   
+    output [3:0] q 
+);
+    reg [3:0] q_int;
+
+    assign q = q_int;
+
+    always @(posedge clk or posedge reset) begin
+        if (reset) 
+            q_int[0] <= 1'b0; 
+        else 
+            q_int[0] <= ~q_int[0]; 
+    end
+
+    // Generate the other flip-flops based on the output of the previous one
+    genvar i;
+    generate
+        for (i = 1; i < 4; i = i + 1) begin : ripple
+            always @(posedge q_int[i-1] or posedge reset) begin
+                if (reset) 
+                    q_int[i] <= 1'b0; 
+                else 
+                    q_int[i] <= ~q_int[i]; 
+            end
+        end
+    endgenerate
+endmodule
+```
 
 **RTL LOGIC FOR 4 Bit Ripple Counter**
 
+![WhatsApp Image 2024-12-17 at 13 25 57_0ddfbabc](https://github.com/user-attachments/assets/053f334b-09a5-4546-ab37-0320f5a40348)
+
 **TIMING DIGRAMS FOR 4 Bit Ripple Counter**
 
+![WhatsApp Image 2024-12-17 at 13 25 57_7fd5b79a](https://github.com/user-attachments/assets/7ec9aa85-d3c1-4821-aa3c-49b4519a9036)
+
 **RESULTS**
+
+Thus 4-bit-ripple-counter has been executed successfully
